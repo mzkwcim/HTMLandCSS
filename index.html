@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./2.css">
+	<title>Formularz</title>
+</head>
+<body>
+	<h1>Formularz kontaktowy</h1>
+	<form id="data">
+		<label for="name">Imię</label>
+		<input type="text" name="name" id="name" oninput="validateName()" autofocus>
+        <label for="lastname">Nazwisko</label>
+		<input type="text" name="lastname" id="lastname" oninput="validateName()" autofocus>
+		<label for="email">Email</label>
+		<input type="email" name="email" id="email" oninput="validateEmail()">
+		<label for="club">Klub Pływacki</label>
+		<input type="text" name="club" id="club">
+
+		<label class="beige">Płeć</label><br>
+		<label for="male">Mężczyzna</label>
+		<input type="radio" name="gender" id="male" value="Mężczyzna">
+		<label for="female">Kobieta</label>
+		<input type="radio" name="gender" id="female" value="Kobieta" checked>
+		
+		<label class="beige">Ulubione style</label><br>
+		<label for="butterfly">Delfin</label>
+		<input type="checkbox" name="swimstyle" id="butterfly" value="Delfin">
+		<label for="backstroke">Grzbiet</label>
+		<input type="checkbox" name="swimstyle" id="sbackstroke" value="Grzbiet">
+		<label for="breaststroke">Żaba</label>
+		<input type="checkbox" name="swimstyle" id="breaststroke" value="Żaba">
+        <label for="freestyle">Kraul</label>
+		<input type="checkbox" name="swimstyle" id="freestyle" value="Kraul">
+        <label for="medley">Zmienny</label>
+		<input type="checkbox" name="swimstyle" id="medley" value="Zmienny">
+
+		<label for="color">Ulubiony kolor</label>
+		<input type="color" name="color" id="color">
+
+		<input type="button" value="Wyślij" onclick="showData()">
+	</form>
+	<div id="result"></div> 
+
+	<script>
+		function showData(){
+			//alert("test");
+
+			let name = document.getElementById("name");
+			//console.log(name.value);
+			let email = document.getElementById("email");
+            let surname = document.getElementById("lastname");
+            let club = document.getElementById("club");
+			let gender = document.getElementsByName("gender");
+			let swimstyle = document.getElementsByName("swimstyle");
+			let color = document.getElementById("color");
+
+			let nameValue = name.value;
+            let surnameValue = surname.value;
+			let emailValue = email.value;
+            let clubValue = club.value;
+			let genderValue = "";
+			let swimstyleValue = [];
+			let colorValue = color.value;
+
+			//console.log(colorValue);
+
+			for (let i = 0; i < gender.length; i++) {
+				if (gender[i].checked) {
+					genderValue = gender[i].value;
+					break;
+				}
+			}
+			//console.log(genderValue);
+
+			for (let i = 0; i < swimstyle.length; i++) {
+				if (swimstyle[i].checked) {
+					swimstyleValue.push(swimstyle[i].value);
+				}			
+			}
+			//console.log(hobbiesValue);
+
+			if (genderValue && swimstyleValue.length > 0 && colorValue && clubValue && nameValue && surnameValue && emailValue) {
+				let p = document.createElement("p");
+				p.innerHTML = "Dziękujemy za wypełnienie formularza. Oto Twoje dane:<br>" +
+				"Imię: " + nameValue + "<br>" +
+                "Nazwisko: " + surnameValue + "<br>" +
+                "Klub Pływacki: " + clubValue + "<br>" +
+				"Email: " + emailValue + "<br>" +
+				"Płeć: " + genderValue + "<br>" +
+				"Style: " + swimstyleValue.join(", ") + "<br>" +
+				"Ulubiony kolor: " + colorValue + "<br>";
+
+				let result = document.getElementById("result");
+				result.innerHTML = "";
+				result.appendChild(p);
+			} else {
+				alert("Proszę podać wszystkie dane poprawnie");
+			}
+		}
+
+        function emailValidator(email){
+            return /\w+@[\w.-]+\.\w{2,}/.test(email);
+        }
+
+        function nameValidator(name){
+            return /^[a-zA-Z]+$/.test(name);
+        }
+
+        function validateEmail(){
+            let emailInput = document.getElementById("email");
+            let emailError = document.getElementById("emailError");
+
+            if (emailValidator(emailInput.value)) {
+                emailError.innerHTML = "";
+            } else {
+                emailError.innerHTML = "Proszę podać poprawny adres e-mail";
+                alert("Niedozwolony znak w adresie e-mail!");
+            }
+        }
+
+        function validateName(){
+            let nameInput = document.getElementById("name");
+            let surnameInput = document.getElementById("lastname");
+            let nameError = document.getElementById("nameError");
+
+            if (nameValidator(nameInput.value) && nameValidator(surnameInput.value)) {
+                nameError.innerHTML = "";
+            } else {
+                nameError.innerHTML = "Proszę podać poprawne imię i nazwisko";
+                alert("Niedozwolony znak w imieniu lub nazwisku!");
+            }
+        }
+	</script>
+</body>
+</html>
